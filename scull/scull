@@ -1,0 +1,15 @@
+total 928
+-rw-rw-r-- 1 liu  liu       8 Jul 14 12:00 built-in.a
+-rw-rw-r-- 1 liu  liu    6869 Jul 14 12:00 main.c
+-rw-rw-r-- 1 liu  liu  228048 Jul 14 12:00 main.o
+-rw-rw-r-- 1 liu  liu     534 Jul 14 09:05 Makefile
+-rw-rw-r-- 1 liu  liu      44 Jul 14 12:00 modules.order
+-rw-rw-r-- 1 liu  liu       0 Jul 14 12:00 Module.symvers
+-rw-r--r-- 1 root root      0 Jul 14 12:05 scull
+-rw-rw-r-- 1 liu  liu    1104 Jul 14 11:58 scull.h
+-rw-rw-r-- 1 liu  liu  339864 Jul 14 12:00 scull.ko
+-rwxrwxr-x 1 liu  liu     647 Jul 14 12:04 scull_load
+-rw-rw-r-- 1 liu  liu      43 Jul 14 12:00 scull.mod
+-rw-rw-r-- 1 liu  liu    1375 Jul 14 12:00 scull.mod.c
+-rw-rw-r-- 1 liu  liu  113600 Jul 14 12:00 scull.mod.o
+-rw-rw-r-- 1 liu  liu  228048 Jul 14 12:00 scull.o

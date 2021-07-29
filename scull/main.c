@@ -6,6 +6,7 @@
 #include <linux/errno.h>
 #include <linux/cdev.h>
 #include <linux/slab.h>
+#include <linux/uaccess.h>
 
 #include "scull.h"
 
@@ -119,7 +120,7 @@ ssize_t scull_read(struct file *filp, char __user *buf, size_t count, loff_t *f_
 	int item, s_pos, q_pos, rest;
 	ssize_t retval = 0;
 
-	if (down_interruptible(&dev->sem))
+	if (mutex_lock_interruptible(&dev->mutex))
 		return -ERESTARTSYS;
 	if (*f_pos >= dev->size)
 		goto out;
@@ -150,7 +151,7 @@ ssize_t scull_read(struct file *filp, char __user *buf, size_t count, loff_t *f_
 	retval = count;
 
 out:
-	up(&dev->sem);
+	mutex_unlock(&dev->mutex);
 	return retval;
 }
 
@@ -163,7 +164,7 @@ ssize_t scull_write(struct file *filp, const char __user *buf, size_t count, lof
 	int item, q_pos, s_pos, rest;
 	ssize_t retval = -ENOMEM;
 
-	if (down_interruptible(&dev->sem))
+	if (mutex_lock_interruptible(&dev->mutex))
 		return -ERESTARTSYS;
 
 	item = (long)*f_pos / itemsize; // 写入位置的量子集索引
@@ -204,7 +205,7 @@ ssize_t scull_write(struct file *filp, const char __user *buf, size_t count, lof
 		dev->size = *f_pos;
 
 out:
-	up(&dev->sem);
+	mutex_unlock(&dev->mutex);
 	return retval;
 }
 
@@ -238,6 +239,8 @@ void scull_cleanup_module(void)
 
 	// cleanup_module is never called if registering failed
 	unregister_chrdev_region(devno, scull_nr_devs);
+	
+	printk(KERN_NOTICE "Close scull");
 }
 
 static void
@@ -295,11 +298,13 @@ be specified at load time
 	{
 		scull_devices[i].quantum = scull_quantum;
 		scull_devices[i].qset = scull_qset;
+		mutex_init(&scull_devices[i].mutex);
 		scull_setup_cdev(&scull_devices[i], i);
 	}
 
 	dev = MKDEV(scull_major, scull_minor + scull_nr_devs);
 
+	printk(KERN_NOTICE "Open scull");
 	return 0;
 
 fail:

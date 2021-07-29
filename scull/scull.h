@@ -30,7 +30,7 @@ struct scull_dev
 	int qset;				 /* 当前数组的大小 */
 	unsigned long size;		 /* 保存的数据总量 */
 	unsigned int access_key; /* 由sculluid和scullpriv使用 */
-	struct semaphore sem;	 /* 互斥信号量 */
+	struct mutex mutex;	 /* 互斥信号量 */
 	struct cdev cdev;		 /* 字符设备结构 */
 };
 
