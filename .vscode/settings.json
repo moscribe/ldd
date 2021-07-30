@@ -1,0 +1,11 @@
+{
+    "C_Cpp.default.includePath": [
+        "/home/liu/kernel-hacking/linux-source/include"
+    ],
+    "files.associations": {
+        "kernel.h": "c",
+        "module.h": "c",
+        "list.h": "c",
+        "stat.h": "c"
+    }
+}
